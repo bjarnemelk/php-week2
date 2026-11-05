@@ -1,0 +1,51 @@
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    height: 10vh;
+    display: flex;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-left: 30vw;
+    margin-right: 30vw;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+    color: #ccc;
+}
+
+.films {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15vw, 1fr));
+    gap: 15px;
+}
+
+.filmcard {
+    background-color: lightgray;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 5px;
+}
+
+.filmcard button {
+    display: block;
+    margin: 10px auto;
+}
