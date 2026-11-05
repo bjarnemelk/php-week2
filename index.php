@@ -2,22 +2,31 @@
 
 require_once 'db.php'; // Zorgt ervoor dat de database connectie wordt gemaakt
 
+$baseQuery = "SELECT films.*, genres.name AS genre, directors.name AS director
+              FROM films
+              LEFT JOIN genres ON films.genre_id = genres.id
+              LEFT JOIN directors ON films.director_id = directors.id";
+
 $sort = $_GET['sort'] ?? '';
+$orderBy = '';
 if ($sort === 'title') {
-    $stmt = $dbh->query("select * from films order by title"); // Alle sorteeropties, gebruikt statement, daarna haalt hij alle films op en bepaalt hij gebaseerd op de sorteeroptie hoe hij ze moet sorteren
+    $orderBy = 'ORDER BY films.title'; // Alle sorteeropties, gebruikt statement, daarna haalt hij alle films op en bepaalt hij gebaseerd op de sorteeroptie hoe hij ze moet sorteren
 } elseif ($sort === 'title_desc') {
-    $stmt = $dbh->query("select * from films order by title desc");
+    $orderBy = 'ORDER BY films.title DESC';
 } elseif ($sort === 'year') {
-    $stmt = $dbh->query("select * from films order by year desc");
+    $orderBy = 'ORDER BY films.year DESC';
 } elseif ($sort === 'year_asc') {
-    $stmt = $dbh->query("select * from films order by year");
+    $orderBy = 'ORDER BY films.year ASC';
 } elseif ($sort === 'director') {
-    $stmt = $dbh->query("select * from films order by director");
+    $orderBy = 'ORDER BY films.director_id';
 } elseif ($sort === 'director_desc') {
-    $stmt = $dbh->query("select * from films order by director desc");
+    $orderBy = 'ORDER BY films.director_id DESC';
 } else {
-    $stmt = $dbh->query("select * from films");
+    $orderBy = '';
 }
+
+$stmt = $dbh->query($baseQuery . ' ' . $orderBy);
+
 $films = $stmt->fetchAll(PDO::FETCH_ASSOC); // Haalt alle films op uit de database en slaat ze op in een array
 
 

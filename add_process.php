@@ -4,10 +4,6 @@ session_start();
 
 require_once 'db.php';
 
-$error = $_SESSION['error'] ?? '';
-unset($_SESSION['error']);
-$old = $_SESSION['old'] ?? [];
-unset($_SESSION['old']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Controleert of het formulier is ingevuld
 
@@ -29,15 +25,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Controleert of het formulier is 
     exit();
 }
 
+$stmtdirector = $dbh->prepare("SELECT id FROM directors WHERE name = :director");
+$stmtgenre = $dbh->prepare("SELECT id FROM genres WHERE name = :genre");
+
+$stmtdirector->bindParam(':director', $director);
+$stmtgenre->bindParam(':genre', $genre);
+
+$stmtdirector->execute();
+$stmtgenre->execute();
+
+$directorId = $stmtdirector->fetchColumn();
+$genreId = $stmtgenre->fetchColumn();
+
     $stmt = $dbh->prepare( // Bereidt de Query voor om de gegevens in de database te zetten
-        "INSERT INTO films (title, year, director, genre) 
-         VALUES (:title, :year, :director, :genre)"
+        "INSERT INTO films (title, year, director_id, genre_id) 
+         VALUES (:title, :year, :director_id, :genre_id)"
     );
 
     $stmt->bindParam(':title', $title); // Bindt de gegevens aan de Query
     $stmt->bindParam(':year', $year);
-    $stmt->bindParam(':director', $director);
-    $stmt->bindParam(':genre', $genre);
+    $stmt->bindParam(':director_id', $directorId);
+    $stmt->bindParam(':genre_id', $genreId);
 
     $stmt->execute(); // Voert het uit
 
