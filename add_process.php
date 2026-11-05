@@ -48,6 +48,7 @@ $genreId = $stmtgenre->fetchColumn();
     $stmt->bindParam(':genre_id', $genreId);
 
     $stmt->execute(); // Voert het uit
+    $_SESSION['success'] = 'Film_added'; 
 
     header("Location: index.php"); // Stuurt de gebruiker terug naar de hoofdpagina
     exit();
