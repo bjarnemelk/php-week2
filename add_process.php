@@ -37,6 +37,20 @@ $stmtgenre->execute();
 $directorId = $stmtdirector->fetchColumn();
 $genreId = $stmtgenre->fetchColumn();
 
+if ($directorId === false) {
+    $stmt = $dbh->prepare("INSERT INTO directors (name) VALUES (:name)");
+    $stmt->bindParam(':name', $director);
+    $stmt->execute();
+    $directorId = $dbh->lastInsertId(); 
+}
+
+if ($genreId === false) {
+    $stmt = $dbh->prepare("INSERT INTO genres (name) VALUES (:name)");
+    $stmt->bindParam(':name', $genre);
+    $stmt->execute();
+    $genreId = $dbh->lastInsertId();
+}
+
     $stmt = $dbh->prepare( // Bereidt de Query voor om de gegevens in de database te zetten
         "INSERT INTO films (title, year, director_id, genre_id) 
          VALUES (:title, :year, :director_id, :genre_id)"

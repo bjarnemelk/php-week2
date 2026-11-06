@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $directorName = trim($_POST['director_name'] ?? '');
 
     if ($directorName === '') {
-        exit('Please fill in the director name.');
+        $_SESSION['error'] = 'empty_fields';
     }
 
     if (!preg_match('/^[a-zA-Z\s]+$/', $directorName)) {

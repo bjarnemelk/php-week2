@@ -1,0 +1,20 @@
+# Dependencies
+/vendor/
+
+# Secrets and API keys
+/config/tmdb_config.php
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.vscode/
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
