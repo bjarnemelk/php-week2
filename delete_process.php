@@ -9,9 +9,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit('Invalid request.'); 
     }
 
-    $stmt = $dbh->prepare("DELETE FROM films WHERE id = :id");
-    $stmt->bindparam(':id', $id);
-    $stmt->execute();
+    $stmtLinks = $dbh->prepare("DELETE FROM films WHERE id = :id");
+    $stmtGenres = $dbh->prepare("DELETE FROM film_genres WHERE film_id = :id");
+    $stmtLinks->bindparam(':id', $id);
+    $stmtGenres->bindparam(':id', $id);
+    $stmtLinks->execute();
+    $stmtGenres->execute();
+    exit();
 
     header("Location: index.php");
 }
