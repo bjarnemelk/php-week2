@@ -2,11 +2,12 @@
 
 require_once 'db.php'; // Zorgt ervoor dat de database connectie wordt gemaakt
 
-$baseQuery = "SELECT films.*, GROUP_CONCAT(genres.name) AS genre, directors.name AS director
+$baseQuery = "SELECT films.*, GROUP_CONCAT(DISTINCT genres.name) AS genre, GROUP_CONCAT(DISTINCT directors.name) AS director
               FROM films
               LEFT JOIN film_genres ON film_genres.film_id = films.id
               LEFT JOIN genres ON genres.id = film_genres.genre_id
-              LEFT JOIN directors ON films.director_id = directors.id
+              LEFT JOIN film_directors ON film_directors.film_id = films.id
+              LEFT JOIN directors ON directors.id = film_directors.director_id
               GROUP BY films.id"; // Query om alle films op te halen, inclusief hun genres en directors
 
 $sort = $_GET['sort'] ?? '';
@@ -20,9 +21,9 @@ if ($sort === 'title') {
 } elseif ($sort === 'year_asc') {
     $orderBy = 'ORDER BY films.year ASC';
 } elseif ($sort === 'director') {
-    $orderBy = 'ORDER BY films.director_id';
+    $orderBy = 'ORDER BY directors.name';
 } elseif ($sort === 'director_desc') {
-    $orderBy = 'ORDER BY films.director_id DESC';
+    $orderBy = 'ORDER BY directors.name DESC';
 } else {
     $orderBy = '';
 }
