@@ -77,6 +77,11 @@ $films = $stmt->fetchAll(PDO::FETCH_ASSOC); // Haalt alle films op uit de databa
                 <p>Year: <?= $film["year"] ?></p>
                 <p>Director: <?= $film["director"] ?></p>
                 <p>Genre: <?= $film["genre"] ?></p>
+                <?php if ($film["poster_path"]) { ?>
+                    <img src="https://image.tmdb.org/t/p/w342<?= htmlspecialchars($film["poster_path"]) ?>" alt="Poster for <?= htmlspecialchars($film["title"]) ?>">
+                <?php } else { ?>
+                    <p>No poster available</p>
+                <?php } ?>
                 <form method="POST" action="delete_process.php">
                     <input type="hidden" name="id" value="<?= $film["id"] ?>">
                     <button type="submit">🗑️</button>
